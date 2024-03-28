@@ -13,7 +13,7 @@ def load_scHiC_data(file_path):
     coord2 = data[:, 3].astype(int)
     return chrom1, coord1, chrom2, coord2
 
-def create_contact_matrix(chrom1, coord1, chrom2, coord2, resolution):
+def create_contact_matrix(chrom1, coord1, chrom2, coord2, resolution, chrom_num):
     """
     Create a contact matrix from scHi-C data.
     """
@@ -21,9 +21,10 @@ def create_contact_matrix(chrom1, coord1, chrom2, coord2, resolution):
     num_bins = int(max_coord / resolution) + 1
     contact_matrix = np.zeros((num_bins, num_bins))
     for i in range(len(chrom1)):
-        bin1 = int(coord1[i] / resolution)
-        bin2 = int(coord2[i] / resolution)
-        contact_matrix[bin1, bin2] += 1
+        if(chrom1[i]==chrom_num and chrom2[i]==chrom_num):
+            bin1 = int(coord1[i] / resolution)
+            bin2 = int(coord2[i] / resolution)
+            contact_matrix[bin1, bin2] += 1
     return contact_matrix
 
 
@@ -46,13 +47,15 @@ if __name__ == "__main__":
     file_path = '../GSE48262_Th1_bgl_pool.txt'
 
     # Parameters
-    resolution = 20000  # Adjust resolution as needed
+
+
+   # resolution = 20000  # Adjust resolution as needed
 
     # Load scHi-C data
     chrom1, coord1, chrom2, coord2 = load_scHiC_data(file_path)
-
     # Create contact matrix
-    contact_matrix = create_contact_matrix(chrom1, coord1, chrom2, coord2, resolution)
+
+    contact_matrix = create_contact_matrix(chrom1, coord1, chrom2, coord2, 2000000,"2")
 
     # Plot heatmap
     plot_heatmap(contact_matrix)
