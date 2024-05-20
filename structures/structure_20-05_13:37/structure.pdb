@@ -1,0 +1,240 @@
+ATOM      1  B   BEA A   1      -5.685  -4.325 -10.123  0.00  0.00           B
+ATOM      2  B   BEA A   2      -3.552  -0.841  -2.238  0.00  0.00           B
+ATOM      3  B   BEA A   3      -3.184  -1.835   3.674  0.00  0.00           B
+ATOM      4  B   BEA A   4      -2.789  -2.216   3.047  0.00  0.00           B
+ATOM      5  B   BEA A   5      -2.579  -2.380   2.640  0.00  0.00           B
+ATOM      6  B   BEA A   6      -2.575  -2.202   2.715  0.00  0.00           B
+ATOM      7  B   BEA A   7      -2.506   2.564   1.326  0.00  0.00           B
+ATOM      8  B   BEA A   8      -1.801   1.506  -0.554  0.00  0.00           B
+ATOM      9  B   BEA A   9      -1.539   2.048   0.389  0.00  0.00           B
+ATOM     10  B   BEA A  10      -1.512  -0.178   3.766  0.00  0.00           B
+ATOM     11  B   BEA A  11      -1.218  -2.100  -1.924  0.00  0.00           B
+ATOM     12  B   BEA A  12      -0.981  -3.737   2.072  0.00  0.00           B
+ATOM     13  B   BEA A  13      -0.719   0.927   7.281  0.00  0.00           B
+ATOM     14  B   BEA A  14      -0.694   0.242   4.462  0.00  0.00           B
+ATOM     15  B   BEA A  15      -0.598  -3.451   4.543  0.00  0.00           B
+ATOM     16  B   BEA A  16      -0.096   1.869  -1.759  0.00  0.00           B
+ATOM     17  B   BEA A  17      -0.051  -2.791  -0.242  0.00  0.00           B
+ATOM     18  B   BEA A  18      -0.042   0.750   8.424  0.00  0.00           B
+ATOM     19  B   BEA A  19      -0.023  -4.135  -1.149  0.00  0.00           B
+ATOM     20  B   BEA A  20       0.067  -3.845   6.786  0.00  0.00           B
+ATOM     21  B   BEA A  21       0.148   5.403   5.365  0.00  0.00           B
+ATOM     22  B   BEA A  22       0.159   0.764   5.120  0.00  0.00           B
+ATOM     23  B   BEA A  23       0.428  -4.724   5.906  0.00  0.00           B
+ATOM     24  B   BEA A  24       0.505  -4.185   6.332  0.00  0.00           B
+ATOM     25  B   BEA A  25       0.527  -6.062   1.784  0.00  0.00           B
+ATOM     26  B   BEA A  26       0.567  -6.059   3.093  0.00  0.00           B
+ATOM     27  B   BEA A  27       0.652   1.310   4.920  0.00  0.00           B
+ATOM     28  B   BEA A  28       0.654   1.052   5.158  0.00  0.00           B
+ATOM     29  B   BEA A  29       0.673   0.622   5.210  0.00  0.00           B
+ATOM     30  B   BEA A  30       0.767  -5.412   4.081  0.00  0.00           B
+ATOM     31  B   BEA A  31       0.819   0.489   4.943  0.00  0.00           B
+ATOM     32  B   BEA A  32       0.974   3.384   0.774  0.00  0.00           B
+ATOM     33  B   BEA A  33       1.189   2.442   4.441  0.00  0.00           B
+ATOM     34  B   BEA A  34       1.289   0.949   3.494  0.00  0.00           B
+ATOM     35  B   BEA A  35       1.298   1.016   3.439  0.00  0.00           B
+ATOM     36  B   BEA A  36       1.485  -2.398  -0.495  0.00  0.00           B
+ATOM     37  B   BEA A  37       1.542  -4.969   3.678  0.00  0.00           B
+ATOM     38  B   BEA A  38       1.643  -1.026   0.189  0.00  0.00           B
+ATOM     39  B   BEA A  39       1.902   3.543   0.923  0.00  0.00           B
+ATOM     40  B   BEA A  40       2.041   0.850   7.081  0.00  0.00           B
+ATOM     41  B   BEA A  41       2.095  -3.840   8.414  0.00  0.00           B
+ATOM     42  B   BEA A  42       2.148   1.053   0.496  0.00  0.00           B
+ATOM     43  B   BEA A  43       2.244  -3.604   5.738  0.00  0.00           B
+ATOM     44  B   BEA A  44       2.272  -3.584   8.361  0.00  0.00           B
+ATOM     45  B   BEA A  45       2.511  -1.688   1.190  0.00  0.00           B
+ATOM     46  B   BEA A  46       2.567  -5.104   2.879  0.00  0.00           B
+ATOM     47  B   BEA A  47       2.669  -0.717   0.795  0.00  0.00           B
+ATOM     48  B   BEA A  48       2.991  -1.234   0.773  0.00  0.00           B
+ATOM     49  B   BEA A  49       3.236  -3.667   3.267  0.00  0.00           B
+ATOM     50  B   BEA A  50       3.347  -1.495   8.554  0.00  0.00           B
+ATOM     51  B   BEA A  51       3.445  -0.738  -0.669  0.00  0.00           B
+ATOM     52  B   BEA A  52       3.898  -0.924  -0.980  0.00  0.00           B
+ATOM     53  B   BEA A  53       4.127  -2.672   6.403  0.00  0.00           B
+ATOM     54  B   BEA A  54       4.184  -2.695   3.449  0.00  0.00           B
+ATOM     55  B   BEA A  55       4.238  -2.731   3.130  0.00  0.00           B
+ATOM     56  B   BEA A  56       4.260  -8.036   6.338  0.00  0.00           B
+ATOM     57  B   BEA A  57       4.342  -2.910   3.689  0.00  0.00           B
+ATOM     58  B   BEA A  58       4.545   1.954   7.968  0.00  0.00           B
+ATOM     59  B   BEA A  59       4.572   0.447   8.345  0.00  0.00           B
+ATOM     60  B   BEA A  60       4.696   0.668   7.843  0.00  0.00           B
+ATOM     61  B   BEA A  61       4.755   3.105   7.824  0.00  0.00           B
+ATOM     62  B   BEA A  62       4.793   0.263   7.819  0.00  0.00           B
+ATOM     63  B   BEA A  63       4.898  -2.734   4.986  0.00  0.00           B
+ATOM     64  B   BEA A  64       4.980  -2.478   6.140  0.00  0.00           B
+ATOM     65  B   BEA A  65       5.240  -3.729   4.631  0.00  0.00           B
+ATOM     66  B   BEA A  66       5.298  -3.255   6.589  0.00  0.00           B
+ATOM     67  B   BEA A  67       5.348  -2.867   7.708  0.00  0.00           B
+ATOM     68  B   BEA A  68       5.382  -3.375   4.351  0.00  0.00           B
+ATOM     69  B   BEA A  69       5.402  -7.245   4.594  0.00  0.00           B
+ATOM     70  B   BEA A  70       5.442  -4.631   1.948  0.00  0.00           B
+ATOM     71  B   BEA A  71       5.443  -5.599   1.646  0.00  0.00           B
+ATOM     72  B   BEA A  72       5.470  -7.363   5.865  0.00  0.00           B
+ATOM     73  B   BEA A  73       5.520  -1.804   4.956  0.00  0.00           B
+ATOM     74  B   BEA A  74       5.706   6.377   5.110  0.00  0.00           B
+ATOM     75  B   BEA A  75       6.128   2.188   4.695  0.00  0.00           B
+ATOM     76  B   BEA A  76       6.182   2.026   3.416  0.00  0.00           B
+ATOM     77  B   BEA A  77       6.310   1.802   3.364  0.00  0.00           B
+ATOM     78  B   BEA A  78       6.315   1.722   3.295  0.00  0.00           B
+ATOM     79  B   BEA A  79       6.321   1.706   3.425  0.00  0.00           B
+ATOM     80  B   BEA A  80       6.495  -5.505   0.001  0.00  0.00           B
+ATOM     81  B   BEA A  81       6.714   0.430   3.449  0.00  0.00           B
+ATOM     82  B   BEA A  82       7.021  -4.100  10.416  0.00  0.00           B
+ATOM     83  B   BEA A  83       7.029   1.839   1.947  0.00  0.00           B
+ATOM     84  B   BEA A  84       7.543  -2.912   4.892  0.00  0.00           B
+ATOM     85  B   BEA A  85       7.727  -3.982   0.408  0.00  0.00           B
+ATOM     86  B   BEA A  86       8.132  -2.995   0.644  0.00  0.00           B
+ATOM     87  B   BEA A  87       8.526   0.583   4.235  0.00  0.00           B
+ATOM     88  B   BEA A  88       8.570   3.799   7.424  0.00  0.00           B
+ATOM     89  B   BEA A  89       8.799   5.635   5.578  0.00  0.00           B
+ATOM     90  B   BEA A  90       8.933  -0.953   2.314  0.00  0.00           B
+ATOM     91  B   BEA A  91       9.087  -1.746   4.569  0.00  0.00           B
+ATOM     92  B   BEA A  92       9.113   0.785  10.014  0.00  0.00           B
+ATOM     93  B   BEA A  93       9.158   3.073  -0.434  0.00  0.00           B
+ATOM     94  B   BEA A  94       9.383   0.132   9.252  0.00  0.00           B
+ATOM     95  B   BEA A  95       9.454   5.453   2.011  0.00  0.00           B
+ATOM     96  B   BEA A  96       9.555  -0.615   6.760  0.00  0.00           B
+ATOM     97  B   BEA A  97       9.621  -1.035   7.419  0.00  0.00           B
+ATOM     98  B   BEA A  98       9.623   1.559   8.275  0.00  0.00           B
+ATOM     99  B   BEA A  99       9.691  -0.984   1.062  0.00  0.00           B
+ATOM    100  B   BEA A 100       9.713   5.273   4.626  0.00  0.00           B
+ATOM    101  B   BEA A 101       9.847  -4.065   6.276  0.00  0.00           B
+ATOM    102  B   BEA A 102       9.863  -4.897   4.293  0.00  0.00           B
+ATOM    103  B   BEA A 103      10.050  -3.203   2.561  0.00  0.00           B
+ATOM    104  B   BEA A 104      10.052   4.453   7.104  0.00  0.00           B
+ATOM    105  B   BEA A 105      10.119   4.223   1.104  0.00  0.00           B
+ATOM    106  B   BEA A 106      10.187  -4.369   3.352  0.00  0.00           B
+ATOM    107  B   BEA A 107      10.193  -2.945   5.807  0.00  0.00           B
+ATOM    108  B   BEA A 108      10.269  -2.541   5.299  0.00  0.00           B
+ATOM    109  B   BEA A 109      10.584  -0.638   2.843  0.00  0.00           B
+ATOM    110  B   BEA A 110      10.996   1.093   7.040  0.00  0.00           B
+ATOM    111  B   BEA A 111      11.102   0.519   4.350  0.00  0.00           B
+ATOM    112  B   BEA A 112      11.103  -1.417   8.917  0.00  0.00           B
+ATOM    113  B   BEA A 113      11.232   0.994   1.833  0.00  0.00           B
+ATOM    114  B   BEA A 114      11.415   2.930   5.829  0.00  0.00           B
+ATOM    115  B   BEA A 115      12.370  -0.837   2.375  0.00  0.00           B
+ATOM    116  B   BEA A 116      12.597   4.986  10.259  0.00  0.00           B
+ATOM    117  B   BEA A 117      13.035   1.610   4.494  0.00  0.00           B
+ATOM    118  B   BEA A 118      13.076  -0.060   8.765  0.00  0.00           B
+ATOM    119  B   BEA A 119      13.409   1.954   6.306  0.00  0.00           B
+ATOM    120  B   BEA A 120      13.439  -0.774   5.130  0.00  0.00           B
+CONECT    1    2
+CONECT    2    1    3
+CONECT    3    2    4
+CONECT    4    3    5
+CONECT    5    4    6
+CONECT    6    5    7
+CONECT    7    6    8
+CONECT    8    7    9
+CONECT    9    8   10
+CONECT   10    9   11
+CONECT   11   10   12
+CONECT   12   11   13
+CONECT   13   12   14
+CONECT   14   13   15
+CONECT   15   14   16
+CONECT   16   15   17
+CONECT   17   16   18
+CONECT   18   17   19
+CONECT   19   18   20
+CONECT   20   19   21
+CONECT   21   20   22
+CONECT   22   21   23
+CONECT   23   22   24
+CONECT   24   23   25
+CONECT   25   24   26
+CONECT   26   25   27
+CONECT   27   26   28
+CONECT   28   27   29
+CONECT   29   28   30
+CONECT   30   29   31
+CONECT   31   30   32
+CONECT   32   31   33
+CONECT   33   32   34
+CONECT   34   33   35
+CONECT   35   34   36
+CONECT   36   35   37
+CONECT   37   36   38
+CONECT   38   37   39
+CONECT   39   38   40
+CONECT   40   39   41
+CONECT   41   40   42
+CONECT   42   41   43
+CONECT   43   42   44
+CONECT   44   43   45
+CONECT   45   44   46
+CONECT   46   45   47
+CONECT   47   46   48
+CONECT   48   47   49
+CONECT   49   48   50
+CONECT   50   49   51
+CONECT   51   50   52
+CONECT   52   51   53
+CONECT   53   52   54
+CONECT   54   53   55
+CONECT   55   54   56
+CONECT   56   55   57
+CONECT   57   56   58
+CONECT   58   57   59
+CONECT   59   58   60
+CONECT   60   59   61
+CONECT   61   60   62
+CONECT   62   61   63
+CONECT   63   62   64
+CONECT   64   63   65
+CONECT   65   64   66
+CONECT   66   65   67
+CONECT   67   66   68
+CONECT   68   67   69
+CONECT   69   68   70
+CONECT   70   69   71
+CONECT   71   70   72
+CONECT   72   71   73
+CONECT   73   72   74
+CONECT   74   73   75
+CONECT   75   74   76
+CONECT   76   75   77
+CONECT   77   76   78
+CONECT   78   77   79
+CONECT   79   78   80
+CONECT   80   79   81
+CONECT   81   80   82
+CONECT   82   81   83
+CONECT   83   82   84
+CONECT   84   83   85
+CONECT   85   84   86
+CONECT   86   85   87
+CONECT   87   86   88
+CONECT   88   87   89
+CONECT   89   88   90
+CONECT   90   89   91
+CONECT   91   90   92
+CONECT   92   91   93
+CONECT   93   92   94
+CONECT   94   93   95
+CONECT   95   94   96
+CONECT   96   95   97
+CONECT   97   96   98
+CONECT   98   97   99
+CONECT   99   98  100
+CONECT  100   99  101
+CONECT  101  100  102
+CONECT  102  101  103
+CONECT  103  102  104
+CONECT  104  103  105
+CONECT  105  104  106
+CONECT  106  105  107
+CONECT  107  106  108
+CONECT  108  107  109
+CONECT  109  108  110
+CONECT  110  109  111
+CONECT  111  110  112
+CONECT  112  111  113
+CONECT  113  112  114
+CONECT  114  113  115
+CONECT  115  114  116
+CONECT  116  115  117
+CONECT  117  116  118
+CONECT  118  117  119
+CONECT  119  118  120
+CONECT  120  119

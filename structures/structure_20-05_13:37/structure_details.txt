@@ -1,0 +1,12 @@
+Generated structure for chromosome: 13
+
+Model parameters:
+d: 5
+p: 1
+f: 0.1
+theta1: 0.7
+a: 1
+b: 1
+d2: 120
+mu1: 20
+mu2: 2
