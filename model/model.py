@@ -7,7 +7,7 @@ from datetime import datetime
 
 from initial_structure import SARWalk
 from points_io import save_points_as_pdb
-from utils import distance
+from utils import distance, random_versor, move_in_lattice
 
 class DataProcessor:
     def __init__(self, path_to_file, chromosome):
@@ -16,7 +16,7 @@ class DataProcessor:
         self.prep_df()
         self.select_chromosome(chromosome)
         self.set_scale()
-        #self.remove_duplicates()
+        self.remove_duplicates()
     
     def prep_df(self):
         self.df.columns = ['chrom1', 'coord1', 'chrom2', 'coord2'] # Naming columns
@@ -50,7 +50,7 @@ class DataProcessor:
         return max(max(self.df['bead1']), max(self.df['bead2']))
 
 class Model:
-    def __init__(self, path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2):
+    def __init__(self, path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2, move_range):
         self.chromosome = chromosome
         data_processor = DataProcessor(path_to_file, self.chromosome)
         self.data = data_processor.df
@@ -63,6 +63,8 @@ class Model:
 
         self.contact_matrix = self.create_contact_matrix()
         self.theta_matrix = self.create_theta_matrix()
+
+        self.move_range = move_range
 
     def initialize_parameters(self, d, p, f, theta1, a, b, d2, mu1, mu2):
         self.parameters = {
@@ -86,7 +88,7 @@ class Model:
             contact_matrix[bead2, bead1] = 1  # Ensure symmetry
         
         return contact_matrix
-    
+
     def calculate_theta_ij(self, i, j):
         theta_ij = 0
         
@@ -96,7 +98,7 @@ class Model:
                 if 0 <= xp < self.contact_matrix.shape[0] and 0 <= yp < self.contact_matrix.shape[1]:
                     if self.contact_matrix[xp, yp] == 1:
                         # Calculating gauss_value
-                        gauss_value = np.exp(-((xp - i)**2 + (yp - j)**2) / self.parameters['mu2'])
+                        gauss_value = math.exp(-((xp - i)**2 + (yp - j)**2) / self.parameters['mu2'])
                         theta_ij += gauss_value
 
         # Outcome should be <= 1
@@ -138,7 +140,7 @@ class Model:
             if j != index:
                 dist = distance(self.structure.coordinates[index], self.structure.coordinates[j])  # Calculating distance d(i, j)
                 if self.contact_matrix[index, j] >= 1 or self.theta_matrix[index, j] == 1:
-                    L += pow((dist - self.parameters['d']), 2) / pow(self.parameters['d'], 2)
+                    L += pow(dist - self.parameters['d'], 2) / pow(self.parameters['d'], 2)
                 elif self.theta_matrix[index, j] > self.parameters['theta1']:
                     delta = self.parameters['d'] / pow(min(1, self.theta_matrix[index][j]), 1/3)
                     L += self.parameters['a'] * (1 - math.exp(-(pow(dist - delta, 2) / self.parameters['mu1'])))
@@ -156,16 +158,17 @@ class Model:
                     return False
         return True
 
-    def propose_move(self, move_range, curr_temp, trails=10):
+    def propose_move(self, curr_temp, trails=10):
         index = random.randint(0, self.number_of_beads - 1) # Randomly select a bead
         initial_loss = self.calculate_loss_for_bead(index)
 
         coordinate = self.structure.coordinates[index].copy()
+        
         best_move = coordinate
         best_loss = initial_loss
 
         for _ in range(trails):
-            random_move = [random.uniform(-move_range, move_range), random.uniform(-move_range, move_range), random.uniform(-move_range, move_range)]
+            random_move = self.move_range * random_versor()
             new_position = coordinate + random_move
             self.structure.coordinates[index] = new_position
             new_loss = self.calculate_loss_for_bead(index)
@@ -186,6 +189,30 @@ class Model:
 
         return accepted
     
+    def propose_move_lattice(self, curr_temp):
+        # Another approch to proposing a move
+        index = random.randint(0, self.number_of_beads - 1) # Randomly select a bead
+        initial_loss = self.calculate_loss_for_bead(index)
+
+        initial_position = self.structure.coordinates[index].copy()
+        new_position = initial_position + move_in_lattice()
+        self.structure.coordinates[index] = new_position
+
+        new_loss = self.calculate_loss_for_bead(index)
+        loss_change = new_loss - initial_loss
+
+        if loss_change <= 0:
+            return True
+        
+        acceptance_proba = math.exp(-loss_change/curr_temp)
+        accepted = True
+
+        if random.random() > acceptance_proba or not self.is_position_unique(new_position, index): # move not accepted
+            self.structure.coordinates[index] = initial_position
+            accepted = False
+        
+        return accepted
+    
     def simulated_annealing(self, initial_temp, cooling_rate, i_max, iter_per_temp):
             print('Starting simulated annealing.')
             curr_temp = initial_temp
@@ -199,7 +226,7 @@ class Model:
                 for j in range(iter_per_temp * self.number_of_beads):
                     accepted_counter = 0
                     
-                    accepted = self.propose_move(1, curr_temp)
+                    accepted = self.propose_move(curr_temp)
                     if accepted:
                         accepted_counter += 1
                     
@@ -208,7 +235,7 @@ class Model:
                         print('Acceptance threshold achieved. Reseting consecutive failures counter.')
                         break
 
-                    if j % 500 == 499:
+                    if j % 500 == 0:
                         print(f'Current loss: {self.calculate_loss()}')
 
                 if consecutive_failures == 3:
@@ -221,10 +248,11 @@ class Model:
         dt_string = now.strftime("%d-%m_%H:%M")
         directory = f'structures/structure_{dt_string}'
         os.mkdir(directory)
-        save_points_as_pdb(np.array(np.unique(self.structure.coordinates, axis=0)), f'{directory}/structure.pdb')
+        save_points_as_pdb(self.structure.coordinates, f'{directory}/structure.pdb')
 
         with open(f'{directory}/structure_details.txt', 'w') as f:
             f.write(f'Generated structure for chromosome: {self.chromosome}\n')
+            f.write(f'Move range: {self.move_range}')
             f.write('\nModel parameters:\n')
             
             for key, value in self.parameters.items():
@@ -234,7 +262,7 @@ class Model:
 if __name__ == '__main__':
     path_to_file = 'Data/GSM1173493_cell-1.txt'
     chromosome = 13
-    d = 5
+    d = 8
     p = 1
     f = 0.1
     theta1 = 0.7
@@ -243,7 +271,8 @@ if __name__ == '__main__':
     d2 = 120
     mu1 = 20
     mu2 = 2
+    move_range = 4
 
-    model = Model(path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2)
+    model = Model(path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2, move_range)
     model.simulated_annealing(10, 0.9, 100, 100)
     model.save_output()
