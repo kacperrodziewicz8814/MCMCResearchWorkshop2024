@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+
 import math
 import random
 import os
 from datetime import datetime
+from tqdm import tqdm
 
 from initial_structure import SARWalk
 from points_io import save_points_as_pdb
@@ -49,35 +52,19 @@ class DataProcessor:
     def get_number_of_beads(self):
         return max(max(self.df['bead1']), max(self.df['bead2']))
 
-class Model:
-    def __init__(self, path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2, move_range):
-        self.chromosome = chromosome
-        data_processor = DataProcessor(path_to_file, self.chromosome)
+class DataImputer:
+    def __init__(self, d2, mu2, path_to_file, chromosome):
+        data_processor = DataProcessor(path_to_file, chromosome)
         self.data = data_processor.df
         
         self.number_of_beads = data_processor.get_number_of_beads()
-        self.structure = SARWalk(self.number_of_beads, 1)
 
-        print('Initilizing model...')
-        self.initialize_parameters(d, p, f, theta1, a, b, d2, mu1, mu2)
+        self.d2 = d2
+        self.mu2 = mu2
 
         self.contact_matrix = self.create_contact_matrix()
         self.theta_matrix = self.create_theta_matrix()
 
-        self.move_range = move_range
-
-    def initialize_parameters(self, d, p, f, theta1, a, b, d2, mu1, mu2):
-        self.parameters = {
-            'd': d,
-            'p': p,
-            'f': f,
-            'theta1': theta1,
-            'a': a,
-            'b': b,
-            'd2': d2,
-            'mu1': mu1,
-            'mu2': mu2
-        }
 
     def create_contact_matrix(self):
         contact_matrix = np.zeros((self.number_of_beads, self.number_of_beads), dtype=int)
@@ -93,12 +80,12 @@ class Model:
         theta_ij = 0
         
         # Iterating d2 distance around i, j
-        for xp in range(i - self.parameters['d2'], i + self.parameters['d2'] + 1):
-            for yp in range(j - self.parameters['d2'], j + self.parameters['d2'] + 1):
+        for xp in range(i - self.d2, i + self.d2 + 1):
+            for yp in range(j - self.d2, j + self.d2 + 1):
                 if 0 <= xp < self.contact_matrix.shape[0] and 0 <= yp < self.contact_matrix.shape[1]:
                     if self.contact_matrix[xp, yp] == 1:
                         # Calculating gauss_value
-                        gauss_value = math.exp(-((xp - i)**2 + (yp - j)**2) / self.parameters['mu2'])
+                        gauss_value = math.exp(-((xp - i)**2 + (yp - j)**2) / self.mu2)
                         theta_ij += gauss_value
 
         # Outcome should be <= 1
@@ -109,12 +96,59 @@ class Model:
     def create_theta_matrix(self):
         theta_matrix = np.zeros((self.number_of_beads, self.number_of_beads), dtype=float)
 
-        for i in range(self.number_of_beads):
+        for i in tqdm(range(self.number_of_beads)):
             for j in range(i):
                 theta_matrix[i][j] = self.calculate_theta_ij(i, j)
                 theta_matrix[j][i] = theta_matrix[i][j]
         
         return theta_matrix
+    
+    def save_matrices(self):
+        np.save(f'imputations/contact_{self.mu2}_{self.d2}_{self.number_of_beads}.npy', self.contact_matrix)
+        np.save(f'imputations/imputated_{self.mu2}_{self.d2}_{self.number_of_beads}.npy', self.theta_matrix)
+
+
+class Model:
+    def __init__(self, path_to_file, chromosome, number_of_beads, d, p, f, theta1, a, b, d2, mu1, mu2, move_range):
+        self.path_to_file = path_to_file
+        self.chromosome = chromosome
+        self.number_of_beads = number_of_beads
+        self.structure = SARWalk(self.number_of_beads, 1)
+
+        print('Initilizing model...')
+        self.initialize_parameters(d, p, f, theta1, a, b, d2, mu1, mu2)
+        self.read_matrices()
+
+        self.move_range = move_range
+        self.loss_history = []
+
+    def initialize_parameters(self, d, p, f, theta1, a, b, d2, mu1, mu2):
+        self.parameters = {
+            'd': d,
+            'p': p,
+            'f': f,
+            'theta1': theta1,
+            'a': a,
+            'b': b,
+            'd2': d2,
+            'mu1': mu1,
+            'mu2': mu2
+        }
+
+    def read_matrices(self):
+        contact_matrix_file = f'imputations/contact_{self.parameters["mu2"]}_{self.parameters["d2"]}_{self.number_of_beads}.npy'
+        theta_matrix_file = f'imputations/imputated_{self.parameters["mu2"]}_{self.parameters["d2"]}_{self.number_of_beads}.npy'
+
+        if os.path.isfile(contact_matrix_file) and os.path.isfile(theta_matrix_file):
+            self.contact_matrix = np.load(contact_matrix_file)
+            self.theta_matrix = np.load(theta_matrix_file)
+
+        else:
+            print('Imputation file not found. Running Data Imputer.')
+            data_imputer = DataImputer(self.parameters['d2'], self.parameters['mu'], self.path_to_file, self.chromosome)
+            self.contact_matrix = data_imputer.contact_matrix
+            self.theta_matrix = data_imputer.theta_matrix
+            data_imputer.save_matrices()
 
     def calculate_loss(self):
         d1 = self.parameters['d'] / pow(self.parameters['theta1'], 1/3)
@@ -165,7 +199,7 @@ class Model:
         coordinate = self.structure.coordinates[index].copy()
         
         best_move = coordinate
-        best_loss = initial_loss
+        best_loss = float('inf')
 
         for _ in range(trails):
             random_move = self.move_range * random_versor()
@@ -178,8 +212,23 @@ class Model:
                 best_loss = new_loss
 
             self.structure.coordinates[index] = coordinate
+        
+        threshold = 1.25 * self.parameters['d']
 
-        acceptance_proba = min(math.exp(-(initial_loss - new_loss) / curr_temp), 1)
+        condition_1 = (index == 0 and distance(best_move, self.structure.coordinates[1]) > threshold)
+        condition_2 = (index == self.number_of_beads - 1 and distance(best_move, self.structure.coordinates[self.number_of_beads - 2]) > threshold)
+        condition_3 = (distance(best_move, self.structure.coordinates[index - 1]) > threshold or distance(best_move, self.structure.coordinates[index + 1] > threshold))
+            
+        if condition_1 or condition_2 or condition_3:
+            return False
+
+        loss_change = best_loss - initial_loss
+
+        if loss_change <= 0:
+            self.structure.coordinates[index] = best_move
+            return True
+
+        acceptance_proba = math.exp(-loss_change/ curr_temp)
         accepted = False
 
         # Update the position if the chosen position is unique
@@ -196,6 +245,7 @@ class Model:
 
         initial_position = self.structure.coordinates[index].copy()
         new_position = initial_position + move_in_lattice()
+        np.clip(new_position, -5 * self.number_of_beads // 2, 5 * self.number_of_beads // 2)
         self.structure.coordinates[index] = new_position
 
         new_loss = self.calculate_loss_for_bead(index)
@@ -222,26 +272,43 @@ class Model:
                 consecutive_failures += 1
                 curr_temp = (cooling_rate ** i) * curr_temp
                 print(f'Current temp: {curr_temp}')
+                accepted_counter = 0
+                curr_loss = self.calculate_loss()
 
-                for j in range(iter_per_temp * self.number_of_beads):
-                    accepted_counter = 0
+                for j in range(iter_per_temp * self.number_of_beads):                    
                     
                     accepted = self.propose_move(curr_temp)
                     if accepted:
                         accepted_counter += 1
                     
-                    if accepted_counter > 8 * self.number_of_beads:
+                    if accepted_counter > 10 * self.number_of_beads:
                         consecutive_failures = 0
                         print('Acceptance threshold achieved. Reseting consecutive failures counter.')
                         break
 
                     if j % 500 == 0:
-                        print(f'Current loss: {self.calculate_loss()}')
+                        loss = self.calculate_loss()
+                        print(f'Current loss: {loss}')
+                        self.loss_history.append(loss)
 
                 if consecutive_failures == 3:
                     print('Three consecutive failures. Annealing process stopped.')
                     break
+
+                if abs(self.calculate_loss() - curr_loss) < 0.001:
+                    print('No significant loss change. Breaking')
+                    break
     
+    def plot_loss_history(self):
+        # Plotting loss history
+        plt.plot(self.loss_history)
+        plt.xlabel('Iteration')
+        plt.ylabel('Loss')
+        plt.title('Loss history')
+        now = datetime.now()
+        dt_string = now.strftime("%d-%m_%H:%M")
+        plt.savefig(f'plots/loss_history_{dt_string}.png')
+
     def save_output(self):
         print('Saving structure.')
         now = datetime.now()
@@ -273,6 +340,6 @@ if __name__ == '__main__':
     mu2 = 2
     move_range = 4
 
-    model = Model(path_to_file, chromosome, d, p, f, theta1, a, b, d2, mu1, mu2, move_range)
+    model = Model(path_to_file, chromosome, 480, d, p, f, theta1, a, b, d2, mu1, mu2, move_range)
     model.simulated_annealing(10, 0.9, 100, 100)
-    model.save_output()
+    model.plot_loss_history()
